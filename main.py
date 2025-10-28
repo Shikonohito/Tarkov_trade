@@ -68,6 +68,16 @@ def update_cost():
     cost_lbl.configure(text=total_cost, fg=color)
     income_lbl.configure(text=int(income), fg=color)
 
+def purchase_entry_focut_out(event):
+    if not purchase_entry.get():
+        purchase_entry.insert(0, "0")
+    update_cost()
+
+def tax_value_entry_focut_out(event):
+    if not tax_value_entry.get():
+        tax_value_entry.insert(0, "0")
+    update_cost()
+
 
 BASE_FONT = ("Arial", 18)
 product_row_list: list[ProductRow] = list()
@@ -92,7 +102,7 @@ cost_purchase_symbol_lbl.grid(row=1, column=1, sticky="nsew")
 purchase_entry = Entry(top_left_subframe, font=BASE_FONT, width=9, validate="key", validatecommand=vcmd_only_numbers)
 purchase_entry.insert(0, "0")
 purchase_entry.grid(row=1, column=2, sticky="nsew")
-purchase_entry.bind("<FocusOut>", lambda e: update_cost())
+purchase_entry.bind("<FocusOut>", purchase_entry_focut_out)
 
 root.grid_columnconfigure(1, weight=1)
 
@@ -108,10 +118,10 @@ income_lbl.grid(row=0, column=1, sticky="nsew")
 tax_lbl = Label(top_right_subframe, text="Налог (%): ", font=BASE_FONT)
 tax_lbl.grid(row=1, column=0, sticky="nsew")
 
-tax_value_entry = Entry(top_right_subframe, font=BASE_FONT, width=3)
+tax_value_entry = Entry(top_right_subframe, font=BASE_FONT, width=3, validate="key", validatecommand=vcmd_only_numbers)
 tax_value_entry.insert(0, "10")
 tax_value_entry.grid(row=1, column=1, sticky="nsew")
-tax_value_entry.bind("<FocusOut>", lambda e: update_cost())
+tax_value_entry.bind("<FocusOut>", tax_value_entry_focut_out)
 
 
 def create_product_row():
